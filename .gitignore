@@ -1,0 +1,15 @@
+.venv/
+__pycache__/
+.ipynb_checkpoints/
+.env
+.env.*
+*.log
+*.pbix
+*.pbit
+*.abf
+*.csv
+!validation/*.csv
+**/.pbi/
+**/localSettings.json
+.DS_Store
+Thumbs.db

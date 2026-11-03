@@ -1,0 +1,10 @@
+{
+  "checked_on": "2026-11-02",
+  "publisher": "Sourav Banerjee",
+  "dataset": "Customer Shopping Trends Dataset",
+  "url": "https://www.kaggle.com/datasets/iamsouravbanerjee/customer-shopping-trends-dataset",
+  "metadata_endpoint": "https://www.kaggle.com/api/v1/datasets/view/iamsouravbanerjee/customer-shopping-trends-dataset",
+  "version": 2,
+  "license_label": "Other (specified in description)",
+  "decision": "Row-level CSVs and data-bearing PBIX withheld from public distribution because clear redistribution terms were not established."
+}

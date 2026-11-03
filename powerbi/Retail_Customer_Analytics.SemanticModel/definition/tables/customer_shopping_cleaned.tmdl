@@ -1,0 +1,205 @@
+table customer_shopping_cleaned
+
+	measure 'Total Revenue' =
+			Sum('customer_shopping_cleaned'[purchase_amount_usd])
+		formatString: $#,0.00
+
+	measure 'Total Customers' =
+			DISTINCTCOUNT(
+			    'customer_shopping_cleaned'[customer_id]
+			)
+		formatString: #,0
+
+	measure 'Average Purchase' =
+			AVERAGE(
+			    'customer_shopping_cleaned'[purchase_amount_usd]
+			)
+		formatString: $#,0.00
+
+	measure 'Subscription Rate' =
+			DIVIDE([Subscribers], [Total Customers])
+		formatString: 0.00%
+
+	measure 'Revenue % by Category' =
+			DIVIDE(
+			    [Total Revenue],
+			    CALCULATE(
+			        [Total Revenue],
+			        ALL('customer_shopping_cleaned'[category])
+			    )
+			)
+		formatString: 0.00%
+
+	measure 'Avg Previous Purchases' =
+			AVERAGE(
+			    'customer_shopping_cleaned'[previous_purchases]
+			)
+		formatString: 0.00
+
+	measure 'Total Products' =
+			DISTINCTCOUNT(
+			    'customer_shopping_cleaned'[item_purchased]
+			)
+		formatString: #,0
+
+	measure 'Total Categories' =
+			DISTINCTCOUNT(
+			    'customer_shopping_cleaned'[category]
+			)
+		formatString: #,0
+
+	measure 'Top Category' =
+			VAR T =
+			    TOPN(
+			        1,
+			        ADDCOLUMNS(
+			            VALUES('customer_shopping_cleaned'[category]),
+			            "@Revenue", [Total Revenue]
+			        ),
+			        [@Revenue], DESC,
+			        'customer_shopping_cleaned'[category], ASC
+			    )
+			RETURN
+			    CONCATENATEX(
+			        T,
+			        'customer_shopping_cleaned'[category],
+			        ", "
+			    )
+
+	measure 'Subscribers' =
+			COALESCE(CALCULATE(
+			    DISTINCTCOUNT('customer_shopping_cleaned'[customer_id]),
+			    KEEPFILTERS('customer_shopping_cleaned'[subscription_status] = "Yes")
+			), 0)
+		formatString: #,0
+
+	measure 'Discount Usage Rate' =
+			DIVIDE(COALESCE(CALCULATE(COUNTROWS('customer_shopping_cleaned'), KEEPFILTERS('customer_shopping_cleaned'[discount_applied] = "Yes")), 0), COUNTROWS('customer_shopping_cleaned'))
+		formatString: 0.00%
+
+	measure 'Average Review Rating' =
+			AVERAGE(
+			    'customer_shopping_cleaned'[review_rating]
+			)
+		formatString: 0.00
+
+	column customer_id
+		dataType: int64
+		sourceColumn: customer_id
+		summarizeBy: none
+
+	column age
+		dataType: int64
+		sourceColumn: age
+		summarizeBy: none
+
+	column gender
+		dataType: string
+		sourceColumn: gender
+		summarizeBy: none
+
+	column item_purchased
+		dataType: string
+		sourceColumn: item_purchased
+		summarizeBy: none
+
+	column category
+		dataType: string
+		sourceColumn: category
+		summarizeBy: none
+
+	column purchase_amount_usd
+		dataType: int64
+		sourceColumn: purchase_amount_usd
+		summarizeBy: none
+
+	column location
+		dataType: string
+		sourceColumn: location
+		summarizeBy: none
+
+	column size
+		dataType: string
+		sourceColumn: size
+		summarizeBy: none
+
+	column color
+		dataType: string
+		sourceColumn: color
+		summarizeBy: none
+
+	column season
+		dataType: string
+		sourceColumn: season
+		summarizeBy: none
+
+	column review_rating
+		dataType: double
+		sourceColumn: review_rating
+		summarizeBy: none
+
+	column subscription_status
+		dataType: string
+		sourceColumn: subscription_status
+		summarizeBy: none
+
+	column shipping_type
+		dataType: string
+		sourceColumn: shipping_type
+		summarizeBy: none
+
+	column discount_applied
+		dataType: string
+		sourceColumn: discount_applied
+		summarizeBy: none
+
+	column promo_code_used
+		dataType: string
+		sourceColumn: promo_code_used
+		summarizeBy: none
+
+	column previous_purchases
+		dataType: int64
+		sourceColumn: previous_purchases
+		summarizeBy: none
+
+	column payment_method
+		dataType: string
+		sourceColumn: payment_method
+		summarizeBy: none
+
+	column frequency_of_purchases
+		dataType: string
+		sourceColumn: frequency_of_purchases
+		summarizeBy: none
+
+	column rating_was_missing
+		dataType: boolean
+		sourceColumn: rating_was_missing
+		summarizeBy: none
+
+	column review_rating_filled
+		dataType: double
+		sourceColumn: review_rating_filled
+		summarizeBy: none
+
+	column age_group
+		dataType: string
+		sourceColumn: age_group
+		summarizeBy: none
+
+	column purchase_history_segment
+		dataType: string
+		sourceColumn: purchase_history_segment
+		summarizeBy: none
+
+	partition customer_shopping_cleaned = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFilePath),[Delimiter=",", Columns=22, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"customer_id", Int64.Type}, {"age", Int64.Type}, {"gender", type text}, {"item_purchased", type text}, {"category", type text}, {"purchase_amount_usd", Int64.Type}, {"location", type text}, {"size", type text}, {"color", type text}, {"season", type text}, {"review_rating", type number}, {"subscription_status", type text}, {"shipping_type", type text}, {"discount_applied", type text}, {"promo_code_used", type text}, {"previous_purchases", Int64.Type}, {"payment_method", type text}, {"frequency_of_purchases", type text}, {"rating_was_missing", type logical}, {"review_rating_filled", type number}, {"age_group", type text}, {"purchase_history_segment", type text}}),
+				    #"Filtered Rows" = Table.SelectRows(#"Changed Type", each true)
+				in
+				    #"Filtered Rows"

@@ -1,0 +1,9 @@
+{
+  "status": "PARTIAL",
+  "schema_documents_validated": 10,
+  "unavailable_schemas": {
+    "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json": "404 Client Error: Not Found for url: https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json"
+  },
+  "errors": [],
+  "desktop_engine_tested": false
+}

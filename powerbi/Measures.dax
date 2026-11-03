@@ -1,0 +1,73 @@
+// Measures in the published source project; original PBIX is unchanged.
+
+Total Revenue =
+Sum('customer_shopping_cleaned'[purchase_amount_usd])
+
+Total Customers =
+DISTINCTCOUNT(
+    'customer_shopping_cleaned'[customer_id]
+)
+
+Average Purchase =
+AVERAGE(
+    'customer_shopping_cleaned'[purchase_amount_usd]
+)
+
+Subscription Rate =
+DIVIDE([Subscribers], [Total Customers])
+
+Revenue % by Category =
+DIVIDE(
+    [Total Revenue],
+    CALCULATE(
+        [Total Revenue],
+        ALL('customer_shopping_cleaned'[category])
+    )
+)
+
+Avg Previous Purchases =
+AVERAGE(
+    'customer_shopping_cleaned'[previous_purchases]
+)
+
+Total Products =
+DISTINCTCOUNT(
+    'customer_shopping_cleaned'[item_purchased]
+)
+
+Total Categories =
+DISTINCTCOUNT(
+    'customer_shopping_cleaned'[category]
+)
+
+Top Category =
+VAR T =
+    TOPN(
+        1,
+        ADDCOLUMNS(
+            VALUES('customer_shopping_cleaned'[category]),
+            "@Revenue", [Total Revenue]
+        ),
+        [@Revenue], DESC,
+        'customer_shopping_cleaned'[category], ASC
+    )
+RETURN
+    CONCATENATEX(
+        T,
+        'customer_shopping_cleaned'[category],
+        ", "
+    )
+
+Subscribers =
+COALESCE(CALCULATE(
+    DISTINCTCOUNT('customer_shopping_cleaned'[customer_id]),
+    KEEPFILTERS('customer_shopping_cleaned'[subscription_status] = "Yes")
+), 0)
+
+Discount Usage Rate =
+DIVIDE(COALESCE(CALCULATE(COUNTROWS('customer_shopping_cleaned'), KEEPFILTERS('customer_shopping_cleaned'[discount_applied] = "Yes")), 0), COUNTROWS('customer_shopping_cleaned'))
+
+Average Review Rating =
+AVERAGE(
+    'customer_shopping_cleaned'[review_rating]
+)

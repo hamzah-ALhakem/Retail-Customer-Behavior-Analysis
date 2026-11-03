@@ -1,0 +1,9 @@
+{
+  "parser": "Microsoft.AnalysisServices.Tabular.TmdlSerializer 19.118.3",
+  "status": "PASS",
+  "tables": 1,
+  "measures": 12,
+  "columns": 22,
+  "parameters": 1,
+  "daxEngineExecuted": false
+}

@@ -1,0 +1,10 @@
+{
+  "status": "PASS",
+  "report_pages": 4,
+  "visual_containers": 48,
+  "json_files_parsed": 57,
+  "model_references_checked": 71,
+  "private_data_files_present": false,
+  "private_local_paths_present": false,
+  "live_desktop_rendering_tested": false
+}

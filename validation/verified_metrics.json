@@ -1,0 +1,22 @@
+{
+  "rows": 3900,
+  "raw_columns": 18,
+  "cleaned_columns": 22,
+  "revenue": 233081,
+  "customers": 3900,
+  "average_purchase": 59.76435897435898,
+  "rating": 3.750064716541548,
+  "observed_ratings": 3863,
+  "missing_ratings": 37,
+  "subscribers": 1053,
+  "discounted": 1677,
+  "raw_sha256": "d1f0b8e906cde9d909361ea28f08b0f33e74659ed4a42cd1d747fd9db2ffa701",
+  "clean_sha256": "2913185d4f9c82fc1804f104ee2181d910ccc56409e17ca11dd5413dda2c5f8e",
+  "notebook_code_cells_executed": 44,
+  "notebook_cleaned_match": true,
+  "pbix_cleaned_match": true,
+  "duplicate_promotional_flags": true,
+  "portable_notebook_fresh_kernel": "PASS",
+  "nonempty_code_cells_executed": 43,
+  "portable_export_matches_original": true
+}
